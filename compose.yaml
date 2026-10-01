@@ -3,7 +3,6 @@ version: '3.8'
 services:
   db:
     image: postgres:15-alpine
-    # container_name: food-db  <-- Removed static name to prevent conflicts
     restart: always
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-food_db}
@@ -23,15 +22,14 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    # container_name: food-order-api <-- Removed static name
     restart: always
     ports:
-      - "5000:5000"  # <-- Added port mapping for Jenkins health check
+      - "5000:5000"
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-food_db}
       POSTGRES_USER: ${POSTGRES_USER:-food_user}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-food_secret_password}
-      DB_HOST: ${DB_HOST:-db}
+      DB_HOST: localhost  # <-- INTENTIONALLY CHANGED TO localhost FOR TROUBLESHOOTING TEST
       DB_PORT: ${DB_PORT:-5432}
     depends_on:
       db:
@@ -41,7 +39,6 @@ services:
 
   nginx:
     image: nginx:alpine
-    # container_name: food-nginx-proxy <-- Removed static name
     restart: always
     ports:
       - "80:80"
