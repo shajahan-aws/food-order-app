@@ -27,17 +27,15 @@ pipeline {
             }
         }
 
-        stage('Test & Verify Application') {
+       stage('Test & Verify Application') {
             steps {
-                echo 'Running live endpoint tests on Nginx proxy...'
+                echo 'Running live endpoint tests on Order API...'
                 script {
-                    // Nginx proxy ke zariye test (Port 80)
-                    sh 'curl -f http://localhost/ || exit 1'
+                    sh 'curl -f http://localhost:5000/ || exit 1'
                 }
             }
         }
-    }
-
+        
     post {
         failure {
             echo 'Pipeline failed! Displaying container logs...'
