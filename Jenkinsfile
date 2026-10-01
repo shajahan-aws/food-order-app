@@ -13,7 +13,6 @@ pipeline {
             steps {
                 script {
                     echo 'Building and starting environment via Docker Compose...'
-                    // Space ki jagah hyphen (-) lagao
                     sh 'docker-compose down || true'
                     sh 'docker-compose up -d --build'
                 }
@@ -29,19 +28,20 @@ pipeline {
         stage('Test & Verify Application') {
             steps {
                 echo 'Testing application...'
-                // Aapke test commands
+                // AAPKE TEST COMMANDS YAHAN AAYENGE
+                // Example: sh 'curl http://localhost:5000/health || exit 1'
             }
         }
     }
 
     post {
-        always {
-            echo 'Cleaning up application containers...'
-            sh 'docker-compose down || true'
-        }
         failure {
             echo 'Pipeline failed! Displaying container logs...'
             sh 'docker-compose logs || true'
+        }
+        always {
+            echo 'Cleaning up application containers...'
+            sh 'docker-compose down || true'
         }
     }
 }
