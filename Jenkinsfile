@@ -27,7 +27,7 @@ pipeline {
             }
         }
 
-       stage('Test & Verify Application') {
+        stage('Test & Verify Application') {
             steps {
                 echo 'Running live endpoint tests on Order API...'
                 script {
@@ -35,7 +35,8 @@ pipeline {
                 }
             }
         }
-        
+    }
+
     post {
         failure {
             echo 'Pipeline failed! Displaying container logs...'
