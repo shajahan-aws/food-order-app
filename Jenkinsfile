@@ -14,7 +14,6 @@ pipeline {
                 script {
                     echo 'Building and starting environment via Docker Compose...'
                     sh 'docker-compose down --remove-orphans || true'
-                    // Pure environment ke puraane containers force-remove karo
                     sh 'docker rm -f food-db food-order-api food-nginx-proxy || true'
                     sh 'docker-compose up -d --build'
                 }
@@ -30,8 +29,14 @@ pipeline {
 
         stage('Test & Verify Application') {
             steps {
-                echo 'Testing application...'
-                // Aapke test commands
+                echo 'Running live endpoint tests on application...'
+                script {
+                    // Test 1: Check Order API directly
+                    sh 'curl -f http://localhost:5000/ || exit 1'
+                    
+                    // Test 2: Check Nginx Reverse Proxy
+                    sh 'curl -f http://localhost:80/ || exit 1'
+                }
             }
         }
     }
