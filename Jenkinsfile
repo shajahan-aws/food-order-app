@@ -29,13 +29,10 @@ pipeline {
 
         stage('Test & Verify Application') {
             steps {
-                echo 'Running live endpoint tests on application...'
+                echo 'Running live endpoint tests on Nginx proxy...'
                 script {
-                    // Test 1: Check Order API directly
-                    sh 'curl -f http://localhost:5000/ || exit 1'
-                    
-                    // Test 2: Check Nginx Reverse Proxy
-                    sh 'curl -f http://localhost:80/ || exit 1'
+                    // Nginx proxy ke zariye test (Port 80)
+                    sh 'curl -f http://localhost/ || exit 1'
                 }
             }
         }
